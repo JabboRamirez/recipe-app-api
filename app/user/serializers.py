@@ -1,5 +1,5 @@
 """
-Serializers for the user API view.
+Serializers for the user API View.
 """
 from django.contrib.auth import (
     get_user_model,
@@ -15,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ('email', 'password', 'name')
+        fields = ['email', 'password', 'name']
         extra_kwargs = {'password': {'write_only': True, 'min_length': 5}}
 
     def create(self, validated_data):
@@ -24,12 +24,13 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class AuthTokenSerializer(serializers.Serializer):
-    """Serializer for the user auth token"""
+    """Serializer for the user auth token."""
     email = serializers.EmailField()
     password = serializers.CharField(
         style={'input_type': 'password'},
         trim_whitespace=False,
     )
+
     def validate(self, attrs):
         """Validate and authenticate the user."""
         email = attrs.get('email')
@@ -43,5 +44,5 @@ class AuthTokenSerializer(serializers.Serializer):
             msg = _('Unable to authenticate with provided credentials.')
             raise serializers.ValidationError(msg, code='authorization')
 
-            attrs['user'] = user
-            return attrs
+        attrs['user'] = user
+        return attrs
