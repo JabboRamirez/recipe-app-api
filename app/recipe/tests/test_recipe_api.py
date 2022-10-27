@@ -21,11 +21,11 @@ RECIPES_URL = reverse('recipe:recipe-list')
 def create_recipe(user, **params):
     """Create and return a sample recipe."""
     defaults = {
-        'tile': 'Sample recipe title',
+        'title': 'Sample recipe title',
         'time_minutes': 22,
         'price': Decimal('5.25'),
         'description': 'Sample description',
-        'link': 'http://example.com/recipe.pdf'
+        'link': 'http://example.com/recipe.pdf',
     }
     defaults.update(params)
 
@@ -46,12 +46,11 @@ class PublicRecipeAPITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-
-class PrivateRecipeAPITests(TestCase):
+class PrivateRecipeApiTests(TestCase):
     """Test authenticated API requests."""
 
     def setUp(self):
-        self.cient = APIClient()
+        self.client = APIClient()
         self.user = get_user_model().objects.create_user(
             'user@example.com',
             'testpass123',
