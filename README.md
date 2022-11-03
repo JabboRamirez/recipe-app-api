@@ -1,2 +1,3 @@
 # recipe-app-api
-recipe api project.
+
+Django project that creates an API/app for creating recipes.
