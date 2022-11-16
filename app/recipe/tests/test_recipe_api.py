@@ -145,7 +145,7 @@ class PrivateRecipeApiTests(TestCase):
             user=self.user,
             title='Sample recipe title',
             link='https://example.com/recipe.pdf',
-            description='Sample recipe description'
+            description='Sample recipe description',
         )
 
         payload = {
@@ -186,7 +186,7 @@ class PrivateRecipeApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(Recipe.objects.filter(id=recipe.id).exists())
 
-    def test_delete_recipe_other_users_recipe_error(self):
+    def test_recipe_other_users_recipe_error(self):
         """Test trying to delete another users recipe gives error."""
         new_user = create_user(email='user2@examaple.com', password='test123')
         recipe = create_recipe(user=new_user)
@@ -264,7 +264,7 @@ class PrivateRecipeApiTests(TestCase):
         tag_lunch = Tag.objects.create(user=self.user, name='Lunch')
         payload = {'tags': [{'name': 'Lunch'}]}
         url = detail_url(recipe.id)
-        res = self.cliente.patch(url, payload, format='json')
+        res = self.client.patch(url, payload, format='json')
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertIn(tag_lunch, recipe.tags.all())
